@@ -1,0 +1,61 @@
+<<<<<<< HEAD
+# 1. 默认设置：让 Git 自动处理（Git 会猜测文件是文本还是二进制）
+* text=auto
+
+# 2. Python 代码：明确声明为文本，且使用 python 的 diff 算法（diff 时更好看）
+*.py text diff=python
+
+# 3. 配置文件和文档：强制作为文本处理
+*.md text
+*.txt text
+*.toml text
+.gitignore text
+.gitattributes text
+
+# 4. 【关键】Shell 脚本和 Docker 配置：必须强制使用 LF 换行符
+#    这是为了防止 Windows 编辑后，在 Linux/Docker 容器里运行报错
+*.sh text eol=lf
+Dockerfile text eol=lf
+
+# 5. 二进制文件：告诉 Git 这些不是文本，不要尝试转换换行符，也不要 diff
+*.png binary
+*.jpg binary
+*.pdf binary
+*.pyc binary
+
+*.7z filter=lfs diff=lfs merge=lfs -text
+*.arrow filter=lfs diff=lfs merge=lfs -text
+*.bin filter=lfs diff=lfs merge=lfs -text
+*.bz2 filter=lfs diff=lfs merge=lfs -text
+*.ckpt filter=lfs diff=lfs merge=lfs -text
+*.ftz filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
+*.h5 filter=lfs diff=lfs merge=lfs -text
+*.joblib filter=lfs diff=lfs merge=lfs -text
+*.lfs.* filter=lfs diff=lfs merge=lfs -text
+*.mlmodel filter=lfs diff=lfs merge=lfs -text
+*.model filter=lfs diff=lfs merge=lfs -text
+*.msgpack filter=lfs diff=lfs merge=lfs -text
+*.npy filter=lfs diff=lfs merge=lfs -text
+*.npz filter=lfs diff=lfs merge=lfs -text
+*.onnx filter=lfs diff=lfs merge=lfs -text
+*.ot filter=lfs diff=lfs merge=lfs -text
+*.parquet filter=lfs diff=lfs merge=lfs -text
+*.pb filter=lfs diff=lfs merge=lfs -text
+*.pickle filter=lfs diff=lfs merge=lfs -text
+*.pkl filter=lfs diff=lfs merge=lfs -text
+*.pt filter=lfs diff=lfs merge=lfs -text
+*.pth filter=lfs diff=lfs merge=lfs -text
+*.rar filter=lfs diff=lfs merge=lfs -text
+*.safetensors filter=lfs diff=lfs merge=lfs -text
+saved_model/**/* filter=lfs diff=lfs merge=lfs -text
+*.tar.* filter=lfs diff=lfs merge=lfs -text
+*.tar filter=lfs diff=lfs merge=lfs -text
+*.tflite filter=lfs diff=lfs merge=lfs -text
+*.tgz filter=lfs diff=lfs merge=lfs -text
+*.wasm filter=lfs diff=lfs merge=lfs -text
+*.xz filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.zst filter=lfs diff=lfs merge=lfs -text
+
+*tfevents* filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,53 @@
+# .gitignore
+
+# --- Python 基础 ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# --- 虚拟环境 ---
+venv/
+.env
+.venv
+arxiv_sum/
+.arxiv_sum/
+
+# --- 操作系统文件 ---
+.DS_Store
+Thumbs.db
+
+# --- IDE 配置 (可选) ---
+.vscode/
+.idea/
+
+# --- 项目特定 (根据你的需求添加) ---
+# 忽略所有数据集文件夹
+data/
+datasets/
+# 忽略特定的输出或日志
+outputs/
+*.log
+# 忽略敏感信息文件 (非常重要!)
+secret_key.txt
+config_local.py
+
+.streamlit/secrets.toml
+.streamlit/secrets.toml
