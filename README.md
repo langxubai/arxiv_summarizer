@@ -12,7 +12,9 @@ license: unknown
 
 # ⚛️ ArXiv AI Daily Summarizer
 
+********************
 Update: 2026-01-28 This project is now available on Streamlit Community Cloud: [https://arxiv-summarizer-2026.streamlit.app/](https://arxiv-summarizer-2026.streamlit.app/)
+********************
 
 **ArXiv AI Daily Summarizer** 是一个专为物理学和人工智能领域科研人员设计的论文速读工具。
 
@@ -97,8 +99,8 @@ docker run -p 8501:8501 arxiv-summarizer
 
 1. 在 Hugging Face 上创建一个新的 Space。
 2. 选择 **Streamlit** 作为 SDK。
-3. 将本项目代码上传至 Space 仓库。
-4. **关键步骤**：在 Space 的 **Settings** -> **Variables and secrets** 页面中：
+3. 将本项目代码上传至 Space 仓库。**注意该项目README中YAML Front Matter被注释，部署到Hugging Face时需要取消注释。**
+4. 在 Space 的 **Settings** -> **Variables and secrets** 页面中：
 * 添加一个新的 Secret，名称为 `GEMINI_API_KEY`，值为你的 Google Gemini API Key。
 
 
