@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 streamlit
 arxiv
 google-genai
-=======
 altair
 pandas
-streamlit
->>>>>>> 8c090af (Duplicate from streamlit/streamlit-template-space)
