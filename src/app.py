@@ -55,24 +55,29 @@ with st.sidebar:
 
 @st.cache_data(ttl=3600)
 def fetch_arxiv_papers(query, max_results):
-    client = arxiv.Client()
-    search = arxiv.Search(
-        query=query,
-        max_results=max_results,
-        sort_by=arxiv.SortCriterion.SubmittedDate
-    )
+    try:
+        client = arxiv.Client()
+        search = arxiv.Search(
+            query=query,
+            max_results=max_results,
+            sort_by=arxiv.SortCriterion.SubmittedDate
+        )
     
-    results = []
-    for result in client.results(search):
-        results.append({
-            "title": result.title,
-            "authors": ", ".join([author.name for author in result.authors]),
-            "abstract": result.summary,
-            "published": result.published.strftime("%Y-%m-%d"),
-            "url": result.entry_id,
-            "pdf_url": result.pdf_url
-        })
-    return results
+        results = []
+        for result in client.results(search):
+            results.append({
+                "title": result.title,
+                "authors": ", ".join([author.name for author in result.authors]),
+                "abstract": result.summary,
+                "published": result.published.strftime("%Y-%m-%d"),
+                "url": result.entry_id,
+                "pdf_url": result.pdf_url
+            })
+        return results
+
+    except Exception as e:
+        st.error(f"无法连接到 ArXiv，请稍后重试。错误信息: {e}")
+        return []
 
 def ai_summarize(text, api_key):
     if not api_key:
