@@ -42,7 +42,16 @@ with st.sidebar:
             "cond-mat.mes-hall (介观物理)",
             "quant-ph (量子物理)",
             "cs.AI (人工智能)",
-            "physics.comp-ph (计算物理)"
+            "cond-mat.supr-con (超导)",
+            "cond-mat.quant-gas (量子气体)",
+            "cond-mat.stat-mech (统计力学)",
+            "cond-mat.dis-nn (无序系统与神经网络)",
+            "hep-th (高能理论)",
+            "gr-qc (广义相对论)",
+            "hep-ph (高能唯象)",
+            "hep-lat (格点场论)",
+            "physics.comp-ph (计算物理)",
+            "cs.LG (机器学习)"
         )
     )
     search_query = f"cat:{category.split()[0]}"
