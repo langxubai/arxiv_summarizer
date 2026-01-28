@@ -93,6 +93,7 @@ def ai_summarize(text, api_key):
         2. **方法**：作者使用了什么理论或数值方法（如 DMRG, DFT, QMC 等）？
         3. **结论**：主要结果是什么？有什么新颖性？
         4. 格式使用 Markdown，重点词汇加粗。如果出现数学公式，请使用 LaTeX 格式（例如 $H$）。
+        5. **关联性**：如果文中涉及“张量网络(Tensor Networks)”、“量子纠缠”、“拓扑序”或“机器学习应用”，请特别高亮指出。
         """
         
         # 调用 generate_content
@@ -114,6 +115,9 @@ with st.spinner(f"正在从 ArXiv 抓取 {category} 的最新论文..."):
 
 st.success(f"成功获取 {len(papers)} 篇最新论文")
 
+if "summaries" not in st.session_state:
+    st.session_state.summaries = {}
+
 for i, paper in enumerate(papers):
     with st.expander(f"📄 {i+1}. {paper['title']} ({paper['published']})"):
         st.markdown(f"**作者**: {paper['authors']}")
@@ -127,9 +131,22 @@ for i, paper in enumerate(papers):
             
         with col2:
             st.subheader("🤖 AI 导读")
-            if st.button(f"生成中文总结", key=f"btn_{i}"):
-                with st.spinner("AI 正在阅读摘要..."):
-                    summary = ai_summarize(paper['abstract'], api_key)
-                    st.markdown(summary)
+            
+            # 检查是否已经有缓存的总结
+            paper_id = paper['url'] # 使用 URL 作为唯一 ID
+            
+            if paper_id in st.session_state.summaries:
+                # 如果有，直接显示，不需要再显示按钮
+                st.markdown(st.session_state.summaries[paper_id])
+                # 也可以加个“重新生成”的按钮（可选）
             else:
-                st.write("点击按钮开始分析...")
+                # 如果没有，显示生成按钮
+                if st.button(f"生成中文总结", key=f"btn_{i}"):
+                    with st.spinner("AI 正在阅读摘要..."):
+                        summary = ai_summarize(paper['abstract'], api_key)
+                        # 保存到 session_state
+                        st.session_state.summaries[paper_id] = summary
+                        # 强制刷新页面以显示结果（或者直接在这里 st.markdown 也可以，但刷新更稳妥）
+                        st.rerun()
+                else:
+                    st.write("点击按钮开始分析...")
