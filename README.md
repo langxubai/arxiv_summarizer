@@ -1,6 +1,4 @@
 ---
-<<<<<<< HEAD
-<<<<<<< HEAD
 title: ArXiv AI Daily Summarizer
 emoji: ⚛️
 colorFrom: blue
@@ -9,15 +7,7 @@ sdk: streamlit
 sdk_version: 1.31.0
 app_file: src/app.py
 pinned: false
-<<<<<<< HEAD
-<<<<<<< HEAD
 license: unknown
-=======
-license: mit
->>>>>>> 689b5f1 (Create README.md)
-=======
-license: unknown
->>>>>>> 3e65b10 (Update README.md)
 ---
 
 # ⚛️ ArXiv AI Daily Summarizer
