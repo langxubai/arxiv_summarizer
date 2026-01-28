@@ -8,15 +8,9 @@ import os
 st.set_page_config(page_title="ArXiv 物理论文速递", page_icon="⚛️", layout="wide")
 
 st.title("⚛️ ArXiv AI Daily Summarizer")
-<<<<<<< HEAD
-<<<<<<< HEAD
+
+
 st.markdown("专为物理科研人员设计的论文速读工具 (Powered by Gemini)")
-=======
-st.markdown("专为物理科研人员设计的论文速读工具 (Powered by Gemini 1.5 Flash)")
->>>>>>> 8cffc83 (add gitingore)
-=======
-st.markdown("专为物理科研人员设计的论文速读工具 (Powered by Gemini)")
->>>>>>> da48ac5 (New Secrets file to enhance api key security and modify gitingore as well)
 
 # --- 2. 侧边栏设置 ---
 with st.sidebar:
