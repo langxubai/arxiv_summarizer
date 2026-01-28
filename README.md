@@ -1,4 +1,4 @@
----
+<!-- ---
 title: ArXiv AI Daily Summarizer
 emoji: ⚛️
 colorFrom: blue
@@ -8,9 +8,11 @@ sdk_version: 1.31.0
 app_file: src/app.py
 pinned: false
 license: unknown
----
+--- -->
 
 # ⚛️ ArXiv AI Daily Summarizer
+
+Update: 2026-01-28 This project is now available on Streamlit Community Cloud: [https://arxiv-summarizer-2026.streamlit.app/](https://arxiv-summarizer-2026.streamlit.app/)
 
 **ArXiv AI Daily Summarizer** 是一个专为物理学和人工智能领域科研人员设计的论文速读工具。
 
