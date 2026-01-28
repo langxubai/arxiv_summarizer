@@ -13,13 +13,6 @@ WORKDIR /app
 # 	> /etc/apt/sources.list
 
 
-
-# RUN printf "%s\n" \
-# 	"deb https://mirrors.tuna.tsinghua.edu.cn/debian stable main contrib non-free non-free-firmware" \
-# 	"deb https://mirrors.tuna.tsinghua.edu.cn/debian stable-updates main contrib non-free non-free-firmware" \
-# 	"deb https://mirrors.tuna.tsinghua.edu.cn/debian-security stable-security main contrib non-free non-free-firmware" \
-# 	> /etc/apt/sources.list
-
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
