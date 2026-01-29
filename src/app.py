@@ -9,7 +9,6 @@ st.set_page_config(page_title="ArXiv 物理论文速递", page_icon="⚛️", la
 
 st.title("⚛️ ArXiv AI Daily Summarizer")
 
-
 st.markdown("专为物理科研人员设计的论文速读工具 (Powered by Gemini)")
 
 # --- 2. 侧边栏设置 ---
@@ -18,23 +17,17 @@ with st.sidebar:
     
     api_key = None
     
-    # 尝试从 Secrets 读取 Key，如果本地没有配置文件则捕获异常，改为手动输入
+    # 尝试从 Secrets 读取 Key
     try:
         if "GEMINI_API_KEY" in st.secrets:
             api_key = st.secrets["GEMINI_API_KEY"]
             st.success("已自动加载 API Key ✅")
-    except FileNotFoundError:
-        # 本地没文件，跳过，等待手动输入
-        pass
     except Exception:
-        # 其他错误（如 Key 不存在），也跳过
         pass
 
-    # 如果没找到 Key，显示输入框
     if not api_key:
         api_key = st.text_input("输入 Google Gemini API Key", type="password")
     
-    # 选择 ArXiv 分类
     category = st.selectbox(
         "选择物理领域",
         (
@@ -42,16 +35,10 @@ with st.sidebar:
             "cond-mat.mes-hall (介观物理)",
             "quant-ph (量子物理)",
             "cs.AI (人工智能)",
-            "cond-mat.supr-con (超导)",
-            "cond-mat.quant-gas (量子气体)",
-            "cond-mat.stat-mech (统计力学)",
-            "cond-mat.dis-nn (无序系统与神经网络)",
-            "hep-th (高能理论)",
-            "gr-qc (广义相对论)",
-            "hep-ph (高能唯象)",
-            "hep-lat (格点场论)",
             "physics.comp-ph (计算物理)",
-            "cs.LG (机器学习)"
+            "cond-mat.supr-con (超导)",
+            "hep-th (高能理论)",
+            "gr-qc (广义相对论)"
         )
     )
     search_query = f"cat:{category.split()[0]}"
@@ -85,17 +72,13 @@ def fetch_arxiv_papers(query, max_results):
         return results
 
     except Exception as e:
-        st.error(f"无法连接到 ArXiv，请稍后重试。错误信息: {e}")
+        st.error(f"无法连接到 ArXiv: {e}")
         return []
 
 def ai_summarize(text, api_key):
-    if not api_key:
-        return "⚠️ 请先在侧边栏输入 API Key"
-    
+    if not api_key: return "⚠️ 请先在侧边栏输入 API Key"
     try:
-        # --- 新版 SDK (google-genai) 的写法 ---
         client = genai.Client(api_key=api_key)
-        
         prompt = f"""
         你是一位资深的理论物理学教授。请阅读以下 arXiv 论文的摘要，并用中文为你的博士生做一个简洁的学术总结。
         
@@ -104,63 +87,142 @@ def ai_summarize(text, api_key):
         
         要求：
         1. **核心问题**：这篇文章解决了什么物理问题？
-        2. **方法**：作者使用了什么理论或数值方法（如 DMRG, DFT, QMC 等）？
+        2. **方法**：作者使用了什么理论或数值方法？
         3. **结论**：主要结果是什么？有什么新颖性？
-        4. 格式使用 Markdown，重点词汇加粗。如果出现数学公式，请使用 LaTeX 格式（例如 $H$）。
-        5. **关联性**：如果文中涉及“张量网络(Tensor Networks)”、“量子纠缠”、“拓扑序”或“机器学习应用”，请特别高亮指出。
+        4. 格式使用 Markdown，重点词汇加粗。数学公式使用 LaTeX。
         """
-        
-        # 调用 generate_content
         response = client.models.generate_content(
-            model='gemini-flash-latest',
-            contents=prompt
+            model='gemini-flash-latest', contents=prompt
         )
         return response.text
     except Exception as e:
         return f"❌ AI 总结失败: {str(e)}"
 
+def ai_qa(paper_abstract, summary, question, chat_history, api_key):
+    """
+    处理针对特定论文的问答
+    """
+    if not api_key: return "⚠️ 请输入 API Key"
+    try:
+        client = genai.Client(api_key=api_key)
+        
+        # 构建上下文 Prompt
+        context_prompt = f"""
+        你是一位物理学导师。
+        
+        【当前论文摘要】:
+        {paper_abstract}
+        
+        【之前的总结】:
+        {summary}
+        
+        【学生的历史提问】:
+        {chat_history}
+        
+        【学生当前问题】:
+        {question}
+        
+        请针对学生的当前问题进行解答。如果是解释概念，请尽量通俗易懂但保持学术严谨性。
+        """
+        
+        response = client.models.generate_content(
+            model='gemini-flash-latest', contents=context_prompt
+        )
+        return response.text
+    except Exception as e:
+        return f"回答失败: {str(e)}"
+
 # --- 4. 主界面逻辑 ---
 
 if not api_key:
-    st.warning("👈 请先在左侧侧边栏输入你的 Google Gemini API Key 以启用 AI 功能。")
+    st.warning("👈 请先在左侧侧边栏输入你的 Google Gemini API Key")
 
 with st.spinner(f"正在从 ArXiv 抓取 {category} 的最新论文..."):
     papers = fetch_arxiv_papers(search_query, max_results)
 
 st.success(f"成功获取 {len(papers)} 篇最新论文")
 
+# 初始化 session state
 if "summaries" not in st.session_state:
     st.session_state.summaries = {}
+if "chats" not in st.session_state: # 用于存储每篇论文的聊天记录
+    st.session_state.chats = {}
 
 for i, paper in enumerate(papers):
+    paper_id = paper['url']
+    
     with st.expander(f"📄 {i+1}. {paper['title']} ({paper['published']})"):
         st.markdown(f"**作者**: {paper['authors']}")
         st.markdown(f"**原文链接**: [ArXiv Page]({paper['url']}) | [PDF Download]({paper['pdf_url']})")
         
         col1, col2 = st.columns([1, 1])
         
+        # --- 左侧：原始摘要 ---
         with col1:
             st.subheader("原始摘要")
             st.caption(paper['abstract'])
             
+        # --- 右侧：AI 互动区 ---
         with col2:
-            st.subheader("🤖 AI 导读")
+            st.subheader("🤖 AI 导读 & 互动")
             
-            # 检查是否已经有缓存的总结
-            paper_id = paper['url'] # 使用 URL 作为唯一 ID
+            # 1. 生成/显示总结
+            has_summary = paper_id in st.session_state.summaries
             
-            if paper_id in st.session_state.summaries:
-                # 如果有，直接显示，不需要再显示按钮
-                st.markdown(st.session_state.summaries[paper_id])
-                # 也可以加个“重新生成”的按钮（可选）
+            if has_summary:
+                # 【修改点 1】使用 container 固定高度，实现内部滚动
+                with st.container(height=400, border=True):
+                    st.markdown(st.session_state.summaries[paper_id])
             else:
-                # 如果没有，显示生成按钮
                 if st.button(f"生成中文总结", key=f"btn_{i}"):
-                    with st.spinner("AI 正在阅读摘要..."):
+                    with st.spinner("AI 正在阅读..."):
                         summary = ai_summarize(paper['abstract'], api_key)
-                        # 保存到 session_state
                         st.session_state.summaries[paper_id] = summary
-                        # 强制刷新页面以显示结果（或者直接在这里 st.markdown 也可以，但刷新更稳妥）
                         st.rerun()
                 else:
-                    st.write("点击按钮开始分析...")
+                    st.info("点击上方按钮生成总结")
+
+            # 2. Q&A 问答区 (只有生成了总结才显示)
+            if has_summary:
+                st.divider()
+                st.markdown("#### 💬 对这篇论文有疑问？")
+                
+                # 初始化这篇论文的聊天记录
+                if paper_id not in st.session_state.chats:
+                    st.session_state.chats[paper_id] = []
+                
+                # 显示历史对话
+                # 为了不占用太多空间，也可以给聊天记录加个滚动条，或者直接显示
+                for chat in st.session_state.chats[paper_id]:
+                    with st.chat_message(chat["role"]):
+                        st.markdown(chat["content"])
+                
+                # 【修改点 2】输入框和处理逻辑
+                # 使用回调函数处理输入，避免页面刷新导致逻辑混乱
+                def submit_question(pid=paper_id):
+                    user_input = st.session_state[f"input_{pid}"]
+                    if user_input:
+                        # 1. 记录用户问题
+                        st.session_state.chats[pid].append({"role": "user", "content": user_input})
+                        
+                        # 2. 获取 AI 回答
+                        answer = ai_qa(
+                            paper_abstract=paper['abstract'],
+                            summary=st.session_state.summaries[pid],
+                            question=user_input,
+                            chat_history=st.session_state.chats[pid][:-1], # 传入之前的历史
+                            api_key=api_key
+                        )
+                        
+                        # 3. 记录 AI 回答
+                        st.session_state.chats[pid].append({"role": "assistant", "content": answer})
+                        
+                        # 4. 清空输入框 (通过设置 key 对应的 session_state 为空)
+                        st.session_state[f"input_{pid}"] = ""
+
+                st.text_input(
+                    "输入你的问题 (例如：'这里的 DMRG 是什么意思？')",
+                    key=f"input_{paper_id}",
+                    on_change=submit_question,
+                    args=(paper_id,) # 传递参数给回调函数
+                )
