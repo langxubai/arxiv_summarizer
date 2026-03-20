@@ -29,7 +29,7 @@ with st.sidebar:
         api_key = st.text_input("输入 Google Gemini API Key", type="password")
     
     category = st.selectbox(
-        "选择物理领域",
+        "选择热门物理领域",
         (
             "cond-mat.str-el (强关联电子)",
             "cond-mat.mes-hall (介观物理)",
@@ -41,7 +41,25 @@ with st.sidebar:
             "gr-qc (广义相对论)"
         )
     )
-    search_query = f"cat:{category.split()[0]}"
+    
+    custom_query = st.text_input(
+        "自定义细分方向 / 关键词搜索",
+        placeholder="例如: physics.optics 或 quantum computing",
+        help="留空则使用上方选中的预设领域。输入类别号(如 physics.optics)即按分类搜索；输入其他词语则按关键词全局搜索。"
+    )
+    
+    if custom_query.strip():
+        query_text = custom_query.strip()
+        if ":" in query_text:
+            search_query = query_text
+        elif " " not in query_text and "." in query_text:
+            search_query = f"cat:{query_text}"
+        else:
+            search_query = f"all:{query_text}"
+        display_category = query_text
+    else:
+        search_query = f"cat:{category.split()[0]}"
+        display_category = category
     
     max_results = st.slider("获取论文数量", 5, 20, 10)
     
@@ -137,7 +155,7 @@ def ai_qa(paper_abstract, summary, question, chat_history, api_key):
 if not api_key:
     st.warning("👈 请先在左侧侧边栏输入你的 Google Gemini API Key")
 
-with st.spinner(f"正在从 ArXiv 抓取 {category} 的最新论文..."):
+with st.spinner(f"正在从 ArXiv 抓取 {display_category} 的最新论文..."):
     papers = fetch_arxiv_papers(search_query, max_results)
 
 st.success(f"成功获取 {len(papers)} 篇最新论文")
