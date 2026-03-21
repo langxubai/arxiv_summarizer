@@ -98,16 +98,16 @@ TRANSLATIONS = {
 
 # 初始化语言设置
 if "lang" not in st.session_state:
-    st.session_state.lang = "zh"
+    st.session_state.lang = "en"
 
 with st.sidebar:
     selected_lang_name = st.radio(
         "🌐 Language / 语言",
-        ("中文", "English"),
-        index=0 if st.session_state.lang == "zh" else 1,
+        ("English", "中文"),
+        index=0 if st.session_state.lang == "en" else 1,
         horizontal=True
     )
-    st.session_state.lang = "zh" if selected_lang_name == "中文" else "en"
+    st.session_state.lang = "en" if selected_lang_name == "English" else "zh"
 
 t = TRANSLATIONS[st.session_state.lang]
 
