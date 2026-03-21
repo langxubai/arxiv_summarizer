@@ -21,6 +21,7 @@ Update:
 - [x] 2026-01-28 This project is now available on Streamlit Community Cloud: [https://arxiv-summarizer-2026.streamlit.app/](https://arxiv-summarizer-2026.streamlit.app/)
 ********************
 
+<span id="ArXiv-AI-Daily-Summarizer"></span>
 **ArXiv AI Daily Summarizer** is a quick paper-reading tool designed specifically for researchers in the fields of physics and artificial intelligence (AI).
 
 It leverages the powerful capabilities of the **Google Gemini** large model to automatically fetch the latest uploaded papers on ArXiv. It then generates targeted academic summaries in Chinese, helping you quickly filter daily literature and keep up with research frontiers.
@@ -127,6 +128,7 @@ This project is already configured with metadata tailored for Hugging Face Space
 
 ---
 
+<span id="Arxiv-AI-每日总结"></span>
 # ⚛️ ArXiv AI 每日总结
 
 **ArXiv AI 每日总结** 是一个专为物理学和人工智能领域科研人员设计的论文速读工具。
