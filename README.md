@@ -12,7 +12,7 @@ license: MIT
 
 # ⚛️ ArXiv AI Daily Summarizer
 
-[English](#-arxiv-ai-daily-summarizer) | [中文版](#-arxiv-ai-daily-summarizer-中文版)
+[English](#ArXiv-AI-Daily-Summarizer) | [中文版](#Arxiv-AI-每日总结)
 
 ********************
 Update: 2026-01-28 This project is now available on Streamlit Community Cloud: [https://arxiv-summarizer-2026.streamlit.app/](https://arxiv-summarizer-2026.streamlit.app/)
@@ -124,13 +124,9 @@ This project is already configured with metadata tailored for Hugging Face Space
 
 ---
 
-# ⚛️ ArXiv AI Daily Summarizer (中文版)
+# ⚛️ ArXiv AI 每日总结
 
-********************
-Update: 2026-01-28 This project is now available on Streamlit Community Cloud: [https://arxiv-summarizer-2026.streamlit.app/](https://arxiv-summarizer-2026.streamlit.app/)
-********************
-
-**ArXiv AI Daily Summarizer** 是一个专为物理学和人工智能领域科研人员设计的论文速读工具。
+**ArXiv AI 每日总结** 是一个专为物理学和人工智能领域科研人员设计的论文速读工具。
 
 它利用 **Google Gemini** 大模型的强大能力，自动抓取 ArXiv 上最新的论文，并生成针对性的中文学术总结，帮助你快速筛选每日文献，紧跟学术前沿。
 

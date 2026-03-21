@@ -29,16 +29,28 @@ with st.sidebar:
         api_key = st.text_input("输入 Google Gemini API Key", type="password")
     
     category = st.selectbox(
-        "选择热门物理领域",
+        "选择领域",
         (
-            "cond-mat.str-el (强关联电子)",
-            "cond-mat.mes-hall (介观物理)",
-            "quant-ph (量子物理)",
-            "cs.AI (人工智能)",
-            "physics.comp-ph (计算物理)",
-            "cond-mat.supr-con (超导)",
+            "astro-ph (天体物理)",
+            "cond-mat (凝聚态物理)",
+            "gr-qc (广义相对论)",
+            "hep-ex (高能物理实验)",
+            "hep-lat (高能物理-格子)",
+            "hep-ph (高能物理-粒子)",
             "hep-th (高能理论)",
-            "gr-qc (广义相对论)"
+            "math-ph (数学物理)",
+            "nlin (非线性物理)",
+            "nucl-ex (核物理实验)",
+            "nucl-th (核物理理论)",
+            "physics (物理学)",
+            "quant-ph (量子物理)",
+            "math (数学)",
+            "cs (计算机科学)",
+            "q-bio (生物物理)",
+            "q-fin (金融数学)",
+            "stat (统计学)",
+            "eess (电子工程与系统科学)",
+            "econ (经济学)"
         )
     )
     
@@ -64,6 +76,11 @@ with st.sidebar:
     max_results = st.slider("获取论文数量", 5, 20, 10)
     
     st.info("提示：点击具体的论文卡片可展开查看详情。")
+    
+    st.divider()
+    st.markdown("### 👨‍💻 关于作者")
+    st.link_button("💻 访问 GitHub 仓库", "https://github.com/langxubai/arxiv_summarizer")
+    # st.markdown("📧 **联系邮箱**: [您的邮箱地址](mailto:your.email@example.com)")
 
 # --- 3. 核心功能函数 ---
 
