@@ -15,7 +15,10 @@ license: MIT
 [English](#ArXiv-AI-Daily-Summarizer) | [中文版](#Arxiv-AI-每日总结)
 
 ********************
-Update: 2026-01-28 This project is now available on Streamlit Community Cloud: [https://arxiv-summarizer-2026.streamlit.app/](https://arxiv-summarizer-2026.streamlit.app/)
+Update: 
+- [x] 2026-03-21 Now support English and Chinese.
+
+- [x] 2026-01-28 This project is now available on Streamlit Community Cloud: [https://arxiv-summarizer-2026.streamlit.app/](https://arxiv-summarizer-2026.streamlit.app/)
 ********************
 
 **ArXiv AI Daily Summarizer** is a quick paper-reading tool designed specifically for researchers in the fields of physics and artificial intelligence (AI).
