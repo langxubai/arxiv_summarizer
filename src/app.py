@@ -176,7 +176,8 @@ def fetch_arxiv_papers(query, max_results):
         search = arxiv.Search(
             query=query,
             max_results=max_results,
-            sort_by=arxiv.SortCriterion.SubmittedDate
+            sort_by=arxiv.SortCriterion.SubmittedDate,
+            sort_order=arxiv.SortOrder.Descending
         )
     
         results = []
