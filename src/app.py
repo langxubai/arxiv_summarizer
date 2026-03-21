@@ -29,6 +29,7 @@ TRANSLATIONS = {
         "custom_query_ph": "例如: physics.optics 或 quantum computing",
         "custom_query_help": "留空则使用上方选中的预设领域。输入类别号(如 physics.optics)即按分类搜索；输入其他词语则按关键词全局搜索。",
         "num_papers": "获取论文数量",
+        "force_refresh": "🔄 强制抓取最新论文 (清除缓存)",
         "tip_expand": "提示：点击具体的论文卡片可展开查看详情。",
         "about_author": "### 👨‍💻 关于作者",
         "github_link": "💻 访问 GitHub 仓库",
@@ -72,6 +73,7 @@ TRANSLATIONS = {
         "custom_query_ph": "e.g., physics.optics or quantum computing",
         "custom_query_help": "Leave blank to use the preset domain selected above. Enter a category code (e.g., physics.optics) to search by category; enter other words for global keyword search.",
         "num_papers": "Number of papers to fetch",
+        "force_refresh": "🔄 Force fetch latest papers (Clear Cache)",
         "tip_expand": "Tip: Click on specific paper cards to expand and view details.",
         "about_author": "### 👨‍💻 About the Author",
         "github_link": "💻 Visit GitHub Repository",
@@ -161,6 +163,9 @@ with st.sidebar:
     
     max_results = st.slider(t["num_papers"], 5, 20, 10)
     
+    if st.button(t["force_refresh"]):
+        fetch_arxiv_papers.clear()
+        
     st.info(t["tip_expand"])
     
     st.divider()
