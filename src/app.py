@@ -153,12 +153,12 @@ with st.sidebar:
         if ":" in query_text:
             search_query = query_text
         elif " " not in query_text and "." in query_text:
-            search_query = f'cat:"{query_text}"'
+            search_query = f"cat:{query_text}*"
         else:
             search_query = f"all:{query_text}"
         display_category = query_text
     else:
-        search_query = f'cat:"{category.split()[0]}"'
+        search_query = f"cat:{category.split()[0]}*"
         display_category = category
     
     max_results = st.slider(t["num_papers"], 5, 20, 10)
