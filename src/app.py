@@ -163,8 +163,7 @@ with st.sidebar:
     
     max_results = st.slider(t["num_papers"], 5, 20, 10)
     
-    if st.button(t["force_refresh"]):
-        fetch_arxiv_papers.clear()
+    force_refresh = st.button(t["force_refresh"])
         
     st.info(t["tip_expand"])
     
@@ -265,6 +264,9 @@ def ai_qa(paper_abstract, summary, question, chat_history, api_key, lang):
         return str(t_func["ai_qa_fail"]).replace("{str_e}", str(e))
 
 # --- 4. 主界面逻辑 ---
+
+if force_refresh:
+    fetch_arxiv_papers.clear()
 
 if not api_key:
     st.warning(t["warn_api_key"])
