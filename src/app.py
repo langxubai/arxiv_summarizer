@@ -208,16 +208,23 @@ def ai_summarize(text, api_key, lang):
         client = genai.Client(api_key=api_key)
         prompt_lang = t_func["prompt_summary_lang"]
         prompt = f"""
-        你是一位资深的理论物理学教授。请阅读以下 arXiv 论文的摘要，并用{prompt_lang}为你的博士生做一个简洁的学术总结。若选择的语言为English，请用英文回答。
+        你是 =第一性原理思考者=, 擅长从万物基本原理和常识出发, 推演做事思路，请阅读以下 arXiv 论文的摘要，并用{prompt_lang}就以下 6 点进行有条理的列举与讲解，**省略所有客套话**，并用 markdown 形式给出(公式使用latex)：
+        1. Task：这篇文章解决的是什么问题？请尽可能形式化！
+        2. Challenge：传统的方法在解决这个问题时遇到了什么挑战？
+        3. Insight & Novelty：
+        3.1. 作者的 Insight 是被什么 Inspiration 启发的？
+        3.2. 作者的 Insight 究竟是什么？是在什么方面上的 Insight？对于每个 Insight，是哪些上述的 Inspiration 启发的？
+        3.3. Novelty：作者本篇文章的 Novelty 体现在何处？是否有架构上、方法上还是策略上的，支持自己 Insight 的创新？
+        3.4. 对于每一个 Novelty, 请你清晰的严格按这个格式描述：【创新点解决的问题是什么】-> 【受哪个 insight 启发】-> 【设计了什么创新点，尽可能具体描述】
+        4. Potential flaw：
+        4.1. 当前问题的情境是否有局限？有没有可能通过延伸架构，解决一些新情境（例如：维度更多、条件更多、约束更多）下的问题？
+        4.2. 在目前情境下，若数据有什么样的不好的性质，解决可能会遇到特别的困难？
+        4.3. 在以上这些困难中，哪种困难值得深度挖掘写成 paper？
+        5. Motivation：
+        5.1. 请你总结这篇文章想到 general idea 的方式，最好以问句形式给出（如：之前的方法 ..., 那可不可以尝试一下 xxx），遵循第一性原理，从问题的本质出发，找到最合理、最容易的，想到本篇文章 idea 的方式。
         
         摘要内容：
         {text}
-        
-        要求：
-        1. **核心问题**（Core Problem）：这篇文章解决了什么物理问题？
-        2. **方法**（Method）：作者使用了什么理论或数值方法？
-        3. **结论**（Conclusion）：主要结果是什么？有什么新颖性？
-        4. 格式使用 Markdown，重点词汇加粗。数学公式使用 LaTeX。
         """
         response = client.models.generate_content(
             model='gemini-flash-latest', contents=prompt
@@ -249,11 +256,11 @@ def ai_qa(paper_abstract, summary, question, chat_history, api_key, lang):
         【学生的历史提问】:
         {chat_history}
         
-        【学生当前问题】:
+        【当前问题】:
         {question}
         
-        请针对学生的当前问题进行解答。如果是解释概念，请尽量通俗易懂但保持学术严谨性。
-        请使用 {prompt_lang} 进行回答。若为English，请全部使用英文回答。
+        请针对当前问题进行解答。如果是解释概念，请尽量通俗易懂但保持学术严谨性。
+        请使用 {prompt_lang} 进行回答。
         """
         
         response = client.models.generate_content(
